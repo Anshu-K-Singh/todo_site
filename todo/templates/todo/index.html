@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>{{title}}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to right, #00c6ff, #0072ff);
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    .container-fluid {
+      padding: 0 20px;
+    }
+
+    .row {
+      margin: 0;
+    }
+
+    h1 {
+      color: #fff;
+      font-size: 2.5em;
+      margin: 0;
+      padding: 30px;
+      text-align: center;
+      text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+    }
+
+    .card {
+      background: #fff;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    }
+
+    .submit_form {
+      background: #fff;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
+      animation: fadeIn 1s ease;
+    }
+
+    .submit_form:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    }
+
+    .submit_form input[type="submit"] {
+      background: #0072ff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 12px 20px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+      font-size: 16px;
+    }
+
+    .submit_form input[type="submit"]:hover {
+      background: #005bb5;
+      transform: scale(1.05);
+    }
+
+    .btn-primary {
+      background: #0072ff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: background 0.3s;
+      font-size: 16px;
+    }
+
+    .btn-primary:hover {
+      background: #005bb5;
+    }
+
+    .alert {
+      background-color: #e3f2fd;
+      color: #0d47a1;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 15px;
+    }
+
+    .card-center {
+      text-align: center;
+    }
+
+    .card-details {
+      margin: 10px 0;
+    }
+
+    .card-details p {
+      margin: 5px 0;
+    }
+
+    .card-action {
+      text-align: right;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+
+<body class="container-fluid">
+  {% if messages %}
+  {% for message in messages %}
+  <div class="alert alert-info">
+    <strong>{{message}}</strong>
+  </div>
+  {% endfor %}
+  {% endif %}
+
+  <h1>TODO LIST</h1>
+
+  <div class="row">
+    <div class="col-md-8">
+      {% for i in list %}
+      <div class="card">
+        <div class="card-center">
+          <h3>{{i.title}}</h3>
+          <div class="card-details">
+            <p><strong>Date:</strong> {{i.date}}</p>
+            <p><strong>Details:</strong> {{i.details}}</p>
+          </div>
+          <div class="card-action">
+            <form action="/del/{{i.id}}" method="POST">
+              {% csrf_token %}
+              <button value="remove" type="submit" class="btn-primary">
+                <span class="glyphicon glyphicon-trash"></span> Remove
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="col-md-1"></div>
+
+    <div class="col-md-3">
+      <div class="submit_form">
+        <form method="POST">
+          {% csrf_token %}
+          {{forms}}
+          <center>
+            <input type="submit" value="Submit" />
+          </center>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
